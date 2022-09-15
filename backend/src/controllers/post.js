@@ -7,12 +7,12 @@ const authenticate = require("../middleware/authentication");
 
 router.post("/post",authenticate, async (req, res) => {
     const newPost = new Post({userid: req.user.newUser, title: req.body.title, desc: req.body.desc});
-    console.log(newPost,"dd",req.user.newUser._id);
+
     const userId = req.user.newUser;
     try {
        const user = await User.findById(userId);
        const post = await newPost.save();
-      //  console.log(post);
+    
        await user.updateOne({$push: {posts: {Post_Id: post._id, Created_Time: post.createdAt}}});
        const obj = {
           "POST-ID": post._id,
@@ -20,7 +20,7 @@ router.post("/post",authenticate, async (req, res) => {
           "Description": post.desc,
           "Created Time(UTC)": post.createdAt
        };
-       console.log(obj,"rf");
+   
        res.status(200).send(obj);
     } catch (error) {
        res.status(500).json(error);
@@ -33,9 +33,9 @@ router.post("/post",authenticate, async (req, res) => {
 router.delete("/post/:id", async(req, res) => {
    try {
       const postId = req.params.id;
-      console.log(postId,"D");
+   
       const post = await Post.findById(postId);
-      console.log(post);
+
       if(!post) { return res.status(403).send("Post not found") };
       await Post.deleteOne({_id: postId});
       res.status(200).send(`post with ${postId} deleted successfully`);

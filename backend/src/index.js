@@ -3,6 +3,8 @@ const express = require("express");
 const connect = require("./config/db");
 
 const shoe = require("./controllers/product");
+
+const like = require("./controllers/like");
 const prod = require("./controllers/post");
 const cors = require("cors");
 const { login, register } = require("./controllers/auth.controller");
@@ -14,6 +16,7 @@ app.use(cors());
 
 app.use("", prod);
 app.use("", shoe);
+app.use("", like);
 app.post("", login);
 app.post("", register);
 
