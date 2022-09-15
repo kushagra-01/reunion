@@ -27,4 +27,36 @@ router.post("/post",authenticate, async (req, res) => {
     }
  });
 
+ 
+// - DELETE api/posts/{id} would delete post with {id} created by the authenticated user.
+
+router.delete("/post/:id", async(req, res) => {
+   try {
+      const postId = req.params.id;
+      console.log(postId,"D");
+      const post = await Post.findById(postId);
+      console.log(post);
+      if(!post) { return res.status(403).send("Post not found") };
+      await Post.deleteOne({_id: postId});
+      res.status(200).send(`post with ${postId} deleted successfully`);
+   } catch (error) {
+      res.status(500).json(error);
+   }
+});
+
+
+router.get("/post",async (req,res)=>{
+
+   try {
+       const data = await Post.find().lean().exec()
+      
+       return res.status(201).send(data)   
+       
+       
+   } catch (error) {
+       return res.status(500).send(error.message)
+       
+   }
+})
+
  module.exports = router;
