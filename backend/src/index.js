@@ -3,12 +3,15 @@ const express = require("express");
 const connect = require("./config/db");
 const { login, register } = require("./controllers/auth.controller");
 
+const shoe = require("./controllers/product");
 const cors = require("cors");
 
 const app = express();
 app.use(express.json());
 app.use(cors());
 
+
+app.use("", shoe);
 app.post("/login", login);
 app.post("/register", register);
 

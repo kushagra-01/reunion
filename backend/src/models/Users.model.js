@@ -1,10 +1,12 @@
 const bcrypt = require('bcryptjs');
 const mongoose = require('mongoose');
 const adminSchema = mongoose.Schema({
-    name:{type:String, required:true},
-    lastname:{type:String, required:true},
+    name:{type:String},
+    lastname:{type:String},
     email:{type:String, required:true, unique:true},
-    password:{type:String, required:true}
+    password:{type:String, required:true},
+    followers:[{type:String}],
+    followings:[{type:String}]
 },{
    versionKey:false,
    timestamps:true,
