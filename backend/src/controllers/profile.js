@@ -5,9 +5,8 @@ const product_model = require("../models/Users.model");
 const router = express.Router();
 
 
-
-
-
+// - GET /api/user should authenticate the request and return the respective user profile.
+//     - RETURN: User Name, number of followers & followings.
 
 router.get("/user", authenticate, async (req, res) => {
 
@@ -46,8 +45,11 @@ router.get("/", async (req, res) => {
     }
 })
 
-router.post("/follow/:id", async (req, res) => {
-    if (req.body.userid !== req.params.id) {
+
+// POST /api/follow/{id} authenticated user would follow user with {id}
+router.post("/follow/:id",authenticate, async (req, res) => {
+    if (req.user.newUser._id!== req.params.id) {
+
         try {
 
             const user = await product_model.findById(req.params.id);
@@ -72,6 +74,8 @@ router.post("/follow/:id", async (req, res) => {
         }
     }
 })
+
+// POST /api/unfollow/{id} authenticated user would unfollow a user with {id}
 router.post("/unfollow/:id", async (req, res) => {
     if (req.body.userid !== req.params.id) {
         try {

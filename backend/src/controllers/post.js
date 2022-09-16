@@ -5,7 +5,10 @@ const express = require("express");
 const router = express.Router();
 const authenticate = require("../middleware/authentication");
 
-router.post("/post", authenticate, async (req, res) => {
+// - POST api/posts/ would add a new post created by the authenticated user.
+//     - Input: Title, Description
+//     - RETURN: Post-ID, Title, Description, Created Time(UTC).
+router.post("/posts", authenticate, async (req, res) => {
    const newPost = new Post({
       userid: req.user.newUser,
       title: req.body.title,
@@ -41,19 +44,20 @@ router.post("/post", authenticate, async (req, res) => {
 
 // - DELETE api/posts/{id} would delete post with {id} created by the authenticated user.
 
-router.delete("/post/:id", async (req, res) => {
+router.delete("/posts/:id",authenticate, async (req, res) => {
    try {
       const postId = req.params.id;
+      console.log(postId,req.user,"ee");
 
       const post = await Post.findById(postId);
 
-      if (!post) {
-         return res.status(403).send("Post not found")
-      };
-      await Post.deleteOne({
-         _id: postId
-      });
-      res.status(200).send(`post with ${postId} deleted successfully`);
+      // if (!post) {
+      //    return res.status(403).send("Post not found")
+      // };
+      // await Post.deleteOne({
+      //    _id: postId
+      // });
+      // res.status(200).send(`post with ${postId} deleted successfully`);
    } catch (error) {
       res.status(500).json(error);
    }

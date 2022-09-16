@@ -5,6 +5,8 @@ const newToken = (newUser) => {
 };
 const User = require("../models/Users.model");
 
+// POST /api/authenticate should perform user authentication and return a JWT token.
+
 const register = async (req, res, next) => {
   try {
     let newUser = await User.findOne({ email: req.body.email });
@@ -15,7 +17,6 @@ const register = async (req, res, next) => {
     .status(201)
     .json({
       msg: "User created successfully",
-      name: newUser.Name,
       token,
     });
   } catch (err) {
@@ -30,7 +31,7 @@ const login = async (req, res, next) => {
     const match = newUser.check(req.body.password);
     if (!match) return res.send("wrong password!");
     const token = newToken(newUser);
-    return res.status(200).json({msg: "Login Successful", name:newUser.email, token});
+    return res.status(200).json({msg: "Login Successful", token});
   } catch (err) {
     return res.status(500).send(err.message);
   }

@@ -4,6 +4,8 @@ const express = require("express");
 const router = express.Router();
 const authenticate = require("../middleware/authentication");
 
+// - POST /api/like/{id} would like the post with {id} by the authenticated user.
+// - POST /api/unlike/{id} would unlike the post with {id} by the authenticated user.
 
 router.post("/like/:id", authenticate, async (req, res) => {
     try {
