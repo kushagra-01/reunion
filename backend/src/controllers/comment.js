@@ -3,6 +3,10 @@ const Post = require("../models/post");
 const authenticate = require("../middleware/authentication");
 
 
+// - POST /api/comment/{id} add comment for post with {id} by the authenticated user.
+//     - Input: Comment
+//     - Return: Comment-ID
+
 router.post("/comment/:id",authenticate, async(req, res) => {
    try {
       const userId = req.user.newUser._id;;

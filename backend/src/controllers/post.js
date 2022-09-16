@@ -51,18 +51,27 @@ router.delete("/posts/:id",authenticate, async (req, res) => {
 
       const post = await Post.findById(postId);
 
-      // if (!post) {
-      //    return res.status(403).send("Post not found")
-      // };
-      // await Post.deleteOne({
-      //    _id: postId
-      // });
-      // res.status(200).send(`post with ${postId} deleted successfully`);
+      if (!post) {
+         return res.status(403).send("Post not found")
+      };
+      await Post.deleteOne({
+         _id: postId
+      });
+      res.status(200).send(`post with ${postId} deleted successfully`);
    } catch (error) {
       res.status(500).json(error);
    }
 });
 
+
+// - GET /api/all_posts would return all posts created by authenticated user sorted by post time.
+//     - RETURN: For each post return the following values
+//         - id: ID of the post
+//         - title: Title of the post
+//         - desc: Description of the post
+//         - created_at: Date and time when the post was created
+//         - comments: Array of comments, for the particular post
+//         - likes: Number of likes for the particular post
 
 router.get("/all_post", async (req, res) => {
 
